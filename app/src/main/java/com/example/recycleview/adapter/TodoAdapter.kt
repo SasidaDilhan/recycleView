@@ -57,6 +57,7 @@ class TodoAdapter:RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
             if (holder.cbTodo.isChecked){
                 val repository = Todoreporsitory(TodoDatabase.getInstance(context))
+                holder.cbTodo.isChecked = false
 
                 CoroutineScope(Dispatchers.IO).launch {
                     repository.delete(data[position])
@@ -67,7 +68,7 @@ class TodoAdapter:RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
                     }
                 }
             }else{
-                Toast.makeText(context, "Cannot delete unchecked todos",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Cannot delete unchecked todos",Toast.LENGTH_SHORT).show()
             }
         }
     }
