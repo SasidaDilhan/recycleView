@@ -53,21 +53,22 @@ class TodoAdapter:RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.cbTodo.text = data[position].item
 
-        if (holder.cbTodo.isChecked){
-            val repository = Todoreporsitory(TodoDatabase.getInstance(context))
+        holder.ivDelet.setOnClickListener {
 
-            CoroutineScope(Dispatchers.IO).launch {
-                repository.delete(data[position])
-                val data = repository.getall()
+            if (holder.cbTodo.isChecked){
+                val repository = Todoreporsitory(TodoDatabase.getInstance(context))
 
-                withContext(Dispatchers.Main){
-                    setData(data,context)
+                CoroutineScope(Dispatchers.IO).launch {
+                    repository.delete(data[position])
+                    val data = repository.getall()
+
+                    withContext(Dispatchers.Main){
+                        setData(data,context)
+                    }
                 }
+            }else{
+                Toast.makeText(context, "Cannot delete unchecked todos",Toast.LENGTH_LONG).show()
             }
-        }else{
-            Toast.makeText(context, "Cannot delete unchecked todos",Toast.LENGTH_LONG).show()
         }
     }
-
-
 }
